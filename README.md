@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Web - Projeto Final
+# 🛒 E-Commerce Web - Projeto final
 
 **Aplicação de Comércio Eletrônico** desenvolvida como projeto final da disciplina de **Programação para Web**.
 
