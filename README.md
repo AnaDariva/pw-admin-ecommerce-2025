@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Web - Projeto Final
+# 🛒 E-Commerce Web - Projeto final
 
 **Aplicação de Comércio Eletrônico** desenvolvida como projeto final da disciplina de **Programação para Web**.
 
@@ -23,7 +23,6 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring Boot" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" alt="Vite" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" width="40" height="40"/>
 </div>
 
 ### 🧰 Tools & Technologies  
