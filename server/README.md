@@ -1,17 +1,16 @@
 # 🛒 E-Commerce Web - Projeto Final
 
-**Aplicação de Comércio Eletrônico** desenvolvida como projeto final da disciplina de **Programação para Web**.
+**Aplicação de Comércio Eletrônico** desenvolvida como projeto final da disciplina de **Tópicos avançados de Programação para Web**.
 
-📁 O projeto é dividido em dois módulos principais:
+Este projeto consiste em uma plataforma de e-commerce completa, dividida em dois módulos principais: uma **loja virtual (vitrine)** para os clientes e um **painel administrativo** para o gerenciamento de pedidos, usuários e operações.
+
+📁 O projeto é estruturado em:
 - `server/` – API RESTful desenvolvida com **Spring Boot**.
-- `client/` – Cliente Web desenvolvido com **React.js**, **TypeScript**, **HTML** e **CSS**.
+- `client/` – Cliente Web (Vitrine e Painel Admin) desenvolvido com **React.js**, **TypeScript**, **HTML** e **CSS**.
 
 ---
 
 <h2 align="left"> 🖥️ Tecnologias Utilizadas </h2>
-
-<p align="left">
-
 
 <p align="left">
   <a href="https://www.java.com" target="_blank">
@@ -32,8 +31,8 @@
   <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" alt="css" width="40" height="40"/>
   </a>
-  <a href="https://www.h2database.com/" target="_blank">
-    <img src="https://www.svgrepo.com/show/331760/h2.svg" alt="h2" width="40" height="40"/>
+  <a href="https://www.postgresql.org" target="_blank">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" alt="postgresql" width="40" height="40"/>
   </a>
   <a href="https://git-scm.com/" target="_blank">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" alt="git" width="40" height="40"/>
@@ -46,58 +45,62 @@
   </a>
 </p>
 
-
----
-
-## 📌 Descrição do Projeto
-
-A aplicação é uma **plataforma de compras online** completa, onde os usuários podem:
-- Navegar por produtos e categorias
-- Adicionar itens ao carrinho (mesmo sem login)
-- Finalizar compras com autenticação
-- Gerenciar endereços
-- Visualizar histórico de pedidos
-
 ---
 
 ## 🎯 Objetivo do Trabalho
 
-- Criar uma aplicação **cliente-servidor Web com acesso a banco de dados**.
-- Implementar uma **API RESTful** com Spring Boot.
-- Desenvolver uma **interface web responsiva** com React.js.
+- Criar uma aplicação **cliente-servidor Web completa com acesso a banco de dados**.
+- Implementar uma **API RESTful** com Spring Boot, incluindo autenticação, gerenciamento de permissões, envio de e-mails e upload de arquivos.
+- Desenvolver uma **interface web responsiva** com React.js, contendo tanto a vitrine para o cliente quanto um painel administrativo.
 - Aplicar boas práticas de arquitetura em aplicações web modernas.
 
 ---
 
-## 🛠️ Funcionalidades Implementadas
+## 🛠️ Funcionalidades
 
-### Backend (`server/`):
-- ✅ Cadastro e autenticação de usuários
-- ✅ Gerenciamento de produtos e categorias
-- ✅ Busca de produtos por ID e categoria
-- ✅ Gerenciamento de carrinho de compras (API)
-- ✅ Cadastro e listagem de pedidos
-- ✅ Gerenciamento de endereços
-- ✅ Integração com banco de dados H2
+A aplicação é dividida em dois módulos funcionais principais:
 
-### Frontend (`client/`):
+### 🛍️ Módulo Cliente (Vitrine)
 - ✅ Listagem de produtos e categorias
 - ✅ Página de detalhes de produto
-- ✅ Carrinho de compras (com edição e remoção)
-- ✅ Cadastro e login de usuários
-- ✅ Cadastro de endereços
+- ✅ Carrinho de compras (com edição e remoção, mesmo sem login)
+- ✅ Cadastro e login de clientes
+- ✅ Gerenciamento de endereços
 - ✅ Tela de finalização de pedido
 - ✅ Histórico de pedidos do usuário
-- ✅ Interface estilizada com HTML + CSS
+
+### 🔐 Módulo Administrativo (Painel)
+- ✅ Tela de cadastro e autenticação para usuários administrativos.
+- ✅ **Painel Administrativo (Dashboard)** com totalizadores (ex: nº de pedidos por situação).
+- ✅ **Gerenciamento de Usuários**:
+    - Apenas administradores podem acessar.
+    - Novos usuários ficam inativos até um admin ativar e atribuir permissões.
+- ✅ **Gerenciamento de Pedidos**:
+    - Listagem de pedidos com filtros (por status, cliente, data).
+    - Alteração de status do pedido (ex: `AGUARDANDO_PAGAMENTO`, `PAGO`, `EM_TRANSPORTE`, `CANCELADO`).
+- ✅ **Anexos em Pedidos**:
+    - Upload de arquivos (.pdf, etc.) associados ao pedido (ex: Nota Fiscal, comprovantes).
+    - Visualização e download dos anexos.
+
+### ⚙️ Backend (API `server/`)
+- ✅ Cadastro e autenticação de usuários com **perfis e permissões (Spring Security)**.
+- ✅ Gerenciamento de produtos e categorias.
+- ✅ Gerenciamento de carrinho de compras.
+- ✅ Endpoints para **CRUD de pedidos e alteração de status**.
+- ✅ Endpoint de **upload de arquivos** (salvamento local, S3 ou Minio) associado a pedidos.
+- ✅ Serviço de **envio de e-mail (Spring Mail)** para notificar clientes sobre atualizações de status.
+- ✅ **Registro de Logs** para operações de atualização de pedidos e envio de e-mails.
+- ✅ Integração com banco de dados (PostgreSQL, MySQL).
 
 ---
 
 ## 🏗️ Ferramentas e Requisitos
 
 ### Backend
-- Java JDK 21+
-- Spring Boot, Spring Web, Spring Data JPA
-- Banco de Dados: H2 (em memória)
+- Java JDK 17+ (ou 21+)
+- Spring Boot, Spring Web, Spring Data JPA, Spring Security
+- Spring Mail (para envio de e-mails)
+- Banco de Dados: PostgreSQL ou MySQL (H2 para testes/desenvolvimento)
 - IDE: IntelliJ ou Eclipse
 - Testes: Postman ou Insomnia
 
@@ -105,15 +108,23 @@ A aplicação é uma **plataforma de compras online** completa, onde os usuário
 - React.js com TypeScript
 - HTML & CSS
 - Node.js & npm
-- IDE: VS Code ou WebStorm
+- IDEs: IntelliJ (Back) e WebStorm (Front)
 
 ---
 
 ## 🗄️ Banco de Dados
 
-O projeto utiliza **H2 Database**, que é executado em memória durante o tempo de execução. O console H2 pode ser acessado em:
+O projeto utiliza preferencialmente **PostgreSQL** ou **MySQL** como banco de dados persistente. Para ambiente de desenvolvimento e testes, o H2 (em memória) pode ser utilizado.
+
+**Estrutura de Tabelas Sugerida:**
+- `usuarios`: Armazena usuários administrativos e clientes (ou separados), com seus perfis e permissões.
+- `pedidos`: Cabeçalho dos pedidos, status, cliente associado.
+- `pedidos_itens`: Itens de cada pedido.
+- `documentos`: Armazena metadados de anexos (ex: nota fiscal) relacionados aos pedidos.
+- `produtos`: Cadastro de produtos.
+- `categorias`: Cadastro de categorias.
 
 ---
 
 ## 👩‍💻 Autor
-- **Ana Luisa Dariva Ramos** - Acadêmica de Análise e Desenvolvimento de Sistemas na UTFPR-PB  
+- **Ana Luisa Dariva Ramos** - Acadêmica de Análise e Desenvolvimento de Sistemas na UTFPR-PB
