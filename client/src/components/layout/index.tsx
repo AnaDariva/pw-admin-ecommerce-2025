@@ -1,96 +1,151 @@
-import { Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import TopMenu from "../Top-Menu";
 
+import {
+    FaInstagram,
+    FaTwitter,
+    FaCcVisa,
+    FaCcMastercard,
+} from "react-icons/fa";
+
+
+import {SiEllo, SiPix} from "react-icons/si";
+
 export function Layout() {
-  return (
-    <>
-      <TopMenu />
-      <main style={{ paddingTop: "40px", minHeight: "calc(100vh - 180px)" }}>
-        <Outlet />
-      </main>
-      <Footer />
-    </>
-  );
+    return (
+
+        <>
+            <TopMenu/>
+            <main style={{paddingTop: "40px", minHeight: "calc(100vh - 180px)"}}>
+                <Outlet/>
+            </main>
+            <Footer/>
+        </>
+    );
 }
 
 function Footer() {
-  return (
-    <footer
-      style={{
-        width: "100vw",
-        position: "relative",
-        left: "50%",
-        right: "50%",
-        marginLeft: "-50vw",
-        marginRight: "-50vw",
-        background: "var(--nba-blue)",
-        color: "#fff",
-        padding: "36px 0 16px 0",
-        textAlign: "center",
-        borderTopLeftRadius: "18px",
-        borderTopRightRadius: "18px",
-        fontSize: "1.05rem",
-        boxShadow: "0 -2px 16px #0001",
-        zIndex: 20,
-      }}
-    >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div>
-          <span style={{ fontWeight: 700, letterSpacing: ".5px" }}>
+    return (
+
+        <footer style={footerStyle}>
+            <div style={containerStyle}>
+
+                <div style={copyrightStyle}>
+          <span style={{fontWeight: 700, letterSpacing: ".5px"}}>
             NBA Store Oficial
           </span>{" "}
-          &copy; {new Date().getFullYear()}
-          <br />
-          <span style={{ fontSize: "0.93rem", opacity: 0.9 }}>
-            Desenvolvido por Nalu | Este é um projeto acadêmico sem fins
+                    &copy; {new Date().getFullYear()}
+                    <br/>
+                    <span style={{fontSize: "0.93rem", opacity: 0.9}}>
+            Desenvolvido por Ana Luisa Dariva | Projeto acadêmico sem fins
             lucrativos
           </span>
-        </div>
-        <div style={{ marginTop: "22px", fontSize: "1.25rem", opacity: 0.95 }}>
-          <span style={{ fontWeight: 600 }}>Aceitamos:</span>{" "}
-          <span title="Visa">💳</span>
-          <span title="Mastercard">🟣</span>
-          <span title="Elo">🟦</span>
-          <span title="Pix" style={{ marginLeft: "10px" }}>
-            🔷 PIX
-          </span>
-        </div>
-        <div style={{ marginTop: "18px", fontSize: "1.35rem" }}>
-          <span style={{ marginRight: "6px" }}>Siga-nos:</span>
-          <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "#fff",
-              margin: "0 7px",
-              textDecoration: "none",
-              opacity: 0.88,
-            }}
-            aria-label="Instagram"
-          >
-            <span role="img" aria-label="Instagram">
-              📸
+                </div>
+
+
+                <div style={linksContainerStyle}>
+
+                    <div style={iconGroupStyle}>
+            <span
+                style={{
+                    fontWeight: 600,
+                    marginRight: "12px",
+                    fontSize: "0.95rem",
+                }}
+            >
+              Aceitamos:
             </span>
-          </a>
-          <a
-            href="https://twitter.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "#fff",
-              margin: "0 7px",
-              textDecoration: "none",
-              opacity: 0.88,
-            }}
-            aria-label="Twitter/X"
-          >
-            <span role="img" aria-label="Twitter">
-              🐦
+                        <FaCcVisa title="Visa" size="2rem"/>
+                        <FaCcMastercard title="Mastercard" size="2rem"/>
+                        <SiEllo title="Elo" size="1.8rem"/>
+                        <SiPix title="Pix" size="1.6rem"/>
+                    </div>
+                    <div style={iconGroupStyle}>
+            <span
+                style={{
+                    fontWeight: 600,
+                    marginRight: "12px",
+                    fontSize: "0.95rem",
+                }}
+            >
+              Siga-nos:
             </span>
-          </a>
-        </div>
-      </div>
-    </footer>
-  );
+                        <a
+                            href="https://www.instagram.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={socialLinkStyle}
+                            aria-label="Instagram"
+                        >
+                            <FaInstagram size="1.8rem"/>
+                        </a>
+                        <a
+                            href="https://twitter.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={socialLinkStyle}
+                            aria-label="Twitter/X"
+                        >
+                            <FaTwitter size="1.8rem"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    );
 }
+
+const footerStyle: React.CSSProperties = {
+    width: "100vw",
+    position: "relative",
+    left: "50%",
+    right: "50%",
+    marginLeft: "-50vw",
+    marginRight: "-50vw",
+    background: "var(--nba-blue)",
+    color: "#fff",
+    padding: "40px 0",
+    borderTopLeftRadius: "18px",
+    borderTopRightRadius: "18px",
+    boxShadow: "0 -2px 16px #0001",
+    zIndex: 20,
+    boxSizing: "border-box",
+};
+
+
+const containerStyle: React.CSSProperties = {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "0 24px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "24px",
+};
+
+const copyrightStyle: React.CSSProperties = {
+    textAlign: "left",
+};
+
+const linksContainerStyle: React.CSSProperties = {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "30px",
+    justifyContent: "center",
+};
+
+const iconGroupStyle: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+};
+
+const socialLinkStyle: React.CSSProperties = {
+    color: "#fff",
+    textDecoration: "none",
+    opacity: 0.9,
+    display: "flex",
+    alignItems: "center",
+    transition: "opacity 0.2s ease-in-out",
+};

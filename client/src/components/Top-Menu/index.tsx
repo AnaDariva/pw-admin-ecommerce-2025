@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/hooks/use-auth";
 import { InputSwitch } from "primereact/inputswitch";
-import { useCart } from "@/context/CartContext"; // Importe o hook useCart
+import { useCart } from "@/context/CartContext";
 
 const TopMenu: React.FC = () => {
   const navigate = useNavigate();
