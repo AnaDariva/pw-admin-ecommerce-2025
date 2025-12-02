@@ -2,6 +2,7 @@
 
 **Aplicação de E-commerce** desenvolvida como projeto final da disciplina de **Tópicos avançados em programação para Web**.
 
+
 Este projeto consiste em uma plataforma de e-commerce completa, dividida em dois módulos principais: uma **loja virtual (vitrine)** para os clientes e um **painel administrativo** para o gerenciamento de pedidos, usuários e operações.
 
 📁 O projeto é estruturado em:
