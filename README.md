@@ -31,18 +31,13 @@ Este projeto consiste em uma plataforma de e-commerce completa, dividida em dois
   <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" alt="css" width="40" height="40"/>
   </a>
-  <a href="https://www.postgresql.org" target="_blank">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" alt="postgresql" width="40" height="40"/>
-  </a>
   <a href="https://git-scm.com/" target="_blank">
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" alt="git" width="40" height="40"/>
   </a>
   <a href="https://www.postman.com/" target="_blank">
     <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="postman" width="40" height="40"/>
   </a>
-  <a href="https://www.docker.com/" target="_blank">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" alt="docker" width="40" height="40"/>
-  </a>
+
 </p>
 
 ---
@@ -97,24 +92,24 @@ A aplicação é dividida em dois módulos funcionais principais:
 ## 🏗️ Ferramentas e Requisitos
 
 ### Backend
-- Java JDK 17+ (ou 21+)
+- Java JDK 21
 - Spring Boot, Spring Web, Spring Data JPA, Spring Security
-- Spring Mail (para envio de e-mails)
-- Banco de Dados: PostgreSQL ou MySQL (H2 para testes/desenvolvimento)
-- IDE: IntelliJ ou Eclipse
+- Spring Mail 
+- Banco de Dados: H2 
+- IDE: IntelliJ 
 - Testes: Postman ou Insomnia
 
 ### Frontend
 - React.js com TypeScript
 - HTML & CSS
 - Node.js & npm
-- IDE: VS Code ou WebStorm
+- IDE: WebStorm
 
 ---
 
 ## 🗄️ Banco de Dados
 
-O projeto utiliza preferencialmente **PostgreSQL** ou **MySQL** como banco de dados persistente. Para ambiente de desenvolvimento e testes, o H2 (em memória) pode ser utilizado.
+O projeto utiliza o H2 (em memória) para testes.
 
 **Estrutura de Tabelas Sugerida:**
 - `usuarios`: Armazena usuários administrativos e clientes (ou separados), com seus perfis e permissões.
