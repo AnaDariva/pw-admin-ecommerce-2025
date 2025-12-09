@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { api } from "@/lib/axios";
-import { useParams, useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {api} from "@/lib/axios";
+import {useParams, useNavigate} from "react-router-dom";
 import {
     ArrowLeft,
     Save,
@@ -41,7 +41,7 @@ interface OrderDocument {
 }
 
 export default function AdminOrderDetailPage() {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const [order, setOrder] = useState<OrderDetail | null>(null);
@@ -149,7 +149,7 @@ export default function AdminOrderDetailPage() {
         return (
             d.toLocaleDateString("pt-BR") +
             " às " +
-            d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+            d.toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"})
         );
     };
 
@@ -161,7 +161,7 @@ export default function AdminOrderDetailPage() {
             <div className="orders-page">
                 <p>{errorMessage ?? "Pedido não encontrado."}</p>
                 <button onClick={() => navigate("/admin/orders")} className="back-link">
-                    <ArrowLeft size={18} /> Voltar
+                    <ArrowLeft size={18}/> Voltar
                 </button>
             </div>
         );
@@ -175,7 +175,7 @@ export default function AdminOrderDetailPage() {
 
             <div className="page-header-row">
                 <button onClick={() => navigate("/admin/orders")} className="back-link">
-                    <ArrowLeft size={20} /> Voltar para lista
+                    <ArrowLeft size={20}/> Voltar para lista
                 </button>
                 <h1 className="page-title">Detalhes do Pedido #{order.id}</h1>
             </div>
@@ -189,7 +189,7 @@ export default function AdminOrderDetailPage() {
 
                     <div className="detail-card">
                         <div className="card-header">
-                            <User size={20} /> Informações do Cliente
+                            <User size={20}/> Informações do Cliente
                         </div>
                         <div className="card-body">
                             <div style={{
@@ -215,7 +215,7 @@ export default function AdminOrderDetailPage() {
                                     {customerInitial}
                                 </div>
                                 <div>
-                                    <p style={{ margin: 0, fontWeight: "bold" }}>
+                                    <p style={{margin: 0, fontWeight: "bold"}}>
                                         {customerName}
                                     </p>
                                 </div>
@@ -229,7 +229,7 @@ export default function AdminOrderDetailPage() {
 
                     <div className="detail-card">
                         <div className="card-header">
-                            <Package size={20} /> Itens do Pedido
+                            <Package size={20}/> Itens do Pedido
                         </div>
 
                         <table className="custom-table">
@@ -285,7 +285,7 @@ export default function AdminOrderDetailPage() {
                                 onClick={handleSaveStatus}
                                 disabled={savingStatus || selectedStatus === order.status}
                             >
-                                <Save size={18} />
+                                <Save size={18}/>
                                 {savingStatus ? "Salvando..." : "Atualizar Status"}
                             </button>
                         </div>
@@ -310,7 +310,7 @@ export default function AdminOrderDetailPage() {
                                     className="upload-action-btn"
                                     disabled={!file || uploading}
                                 >
-                                    <Upload size={16} />
+                                    <Upload size={16}/>
                                     {uploading ? "Enviando..." : "Anexar"}
                                 </button>
                             </div>
@@ -324,7 +324,7 @@ export default function AdminOrderDetailPage() {
                                         <li key={doc.id} className="doc-item">
 
                                             <div className="doc-icon">
-                                                <FileText size={20} color="#64748b" />
+                                                <FileText size={20} color="#64748b"/>
                                             </div>
 
                                             <div className="doc-info">
@@ -332,27 +332,23 @@ export default function AdminOrderDetailPage() {
                                                 <span className="doc-size">{(doc.size / 1024).toFixed(0)} KB</span>
                                             </div>
 
-
                                             <div className="doc-actions-mini">
-
                                                 <a
-                                                    href={`http://localhost:8080/admin/orders/documents/${doc.id}/view`}
+                                                    href={`${import.meta.env.VITE_API_URL}/admin/orders/documents/${doc.id}/view`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    title="Visualizar"
                                                     className="doc-link-btn"
                                                 >
-                                                    <Eye size={16} />
+                                                    <Eye size={16}/>
                                                 </a>
 
                                                 <a
-                                                    href={`http://localhost:8080/admin/orders/documents/${doc.id}/download`}
+                                                    href={`${import.meta.env.VITE_API_URL}/admin/orders/documents/${doc.id}/download`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    title="Baixar"
                                                     className="doc-link-btn"
                                                 >
-                                                    <Download size={16} />
+                                                    <Download size={16}/>
                                                 </a>
 
                                             </div>

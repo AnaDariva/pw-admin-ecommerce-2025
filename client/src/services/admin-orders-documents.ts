@@ -17,10 +17,36 @@ export async function uploadDocument(orderId: number, file: File): Promise<IOrde
     return res.data;
 }
 
-export function downloadDocument(documentId: number) {
-    window.open(`/admin/orders/documents/${documentId}/download`, "_blank");
+
+export async function downloadDocument(documentId: number) {
+    const url = `${import.meta.env.VITE_API_URL}/admin/orders/documents/${documentId}/download`;
+
+    const res = await api.get(url, {
+        responseType: "blob",
+    });
+
+    const blob = new Blob([res.data]);
+    const objectUrl = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = objectUrl;
+    link.download = "documento";
+    link.click();
+
+    window.URL.revokeObjectURL(objectUrl);
 }
 
-export function viewDocument(documentId: number) {
-    window.open(`/admin/orders/documents/${documentId}/view`, "_blank");
+
+export async function viewDocument(documentId: number) {
+    const url = `${import.meta.env.VITE_API_URL}/admin/orders/documents/${documentId}/view`;
+
+    const res = await api.get(url, {
+        responseType: "blob",
+    });
+
+    const blob = new Blob([res.data]);
+    const objectUrl = window.URL.createObjectURL(blob);
+
+    window.open(objectUrl, "_blank");
 }
+
