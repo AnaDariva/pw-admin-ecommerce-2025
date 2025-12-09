@@ -69,7 +69,9 @@ public class WebSecurity {
 
                 .requestMatchers(antMatcher("/h2-console/**")).permitAll()
 
-                .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+                .requestMatchers("/admin/orders/documents/**").permitAll()
+
+                .requestMatchers("/admin/**").hasRole("ADMIN")
 
 
                 .anyRequest().authenticated());

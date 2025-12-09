@@ -34,7 +34,6 @@ public class AdminOrderDocumentController {
         return documentService.listByOrder(orderId);
     }
 
-    // doc espec.
     @GetMapping("/documents/{documentId}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
         OrderDocument doc = documentService.getDocument(documentId);
@@ -46,6 +45,7 @@ public class AdminOrderDocumentController {
                         "attachment; filename=\"" + doc.getOriginalFilename() + "\"")
                 .body(resource);
     }
+
     @GetMapping("/documents/{documentId}/view")
     public ResponseEntity<Resource> viewDocument(@PathVariable Long documentId) {
         OrderDocument doc = documentService.getDocument(documentId);
