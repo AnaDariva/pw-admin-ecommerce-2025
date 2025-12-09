@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails {
@@ -28,10 +32,18 @@ public class User implements UserDetails {
 
     @NotNull
     @Size(min = 6)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{br.edu.utfpr.pb.pw44s.server.senha}")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
+            message = "{br.edu.utfpr.pb.pw44s.server.senha}"
+    )
     private String password;
 
-    // === Construtores ===
+    @Column(nullable = false)
+    private boolean enabled = false;
+
+    @Column(nullable = false)
+    private String role = "ROLE_CUSTOMER";
+
     public User() {
     }
 
@@ -42,7 +54,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    // === Builder manual ===
     public static class Builder {
         private Long id;
         private String displayName;
@@ -78,7 +89,7 @@ public class User implements UserDetails {
         return new Builder();
     }
 
-    // === Getters e Setters ===
+
     public Long getId() {
         return id;
     }
@@ -117,9 +128,10 @@ public class User implements UserDetails {
     @com.fasterxml.jackson.annotation.JsonIgnore
     private java.util.List<Order> orders;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ROLE_USER");
+        return AuthorityUtils.createAuthorityList(this.role);
     }
 
     @Override
@@ -139,6 +151,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

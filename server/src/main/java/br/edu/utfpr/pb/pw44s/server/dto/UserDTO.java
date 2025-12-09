@@ -23,18 +23,19 @@ public class UserDTO {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
     private String password;
 
+    private Boolean enabled;
+    private String role;
 
     public UserDTO() {
     }
-
 
     public UserDTO(User user) {
         this.id = user.getId();
         this.displayName = user.getDisplayName();
         this.username = user.getUsername();
-        this.password = user.getPassword();
+        this.enabled = user.isEnabled();
+        this.role = user.getRole();
     }
-
 
     public Long getId() {
         return id;
@@ -68,13 +69,37 @@ public class UserDTO {
         this.password = password;
     }
 
-    // Método para converter UserDTO em User
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public User getUser() {
         User user = new User();
         user.setId(this.id);
         user.setDisplayName(this.displayName);
         user.setUsername(this.username);
         user.setPassword(this.password);
+
+        if (this.enabled != null) {
+            user.setEnabled(this.enabled);
+        }
+
+        if (this.role != null) {
+            user.setRole(this.role);
+        }
+
         return user;
     }
 }

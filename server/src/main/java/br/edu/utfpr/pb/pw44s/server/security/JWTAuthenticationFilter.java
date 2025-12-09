@@ -7,47 +7,46 @@ import br.edu.utfpr.pb.pw44s.server.service.AuthService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.NoArgsConstructor;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-@NoArgsConstructor
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
-    private AuthService authService;
+
+    private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, AuthService authService) {
         this.authenticationManager = authenticationManager;
         this.authService = authService;
+
+        setFilterProcessesUrl("/login");
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) {
+
         try {
-            User credentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            var creds = new ObjectMapper().readTree(request.getInputStream());
+            String username = creds.get("username").asText();
+            String password = creds.get("password").asText();
 
-            User user = (User) authService.loadUserByUsername(credentials.getUsername());
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(username, password);
 
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credentials.getUsername(),
-                            credentials.getPassword(),
-                            user.getAuthorities()
-                    )
-            );
-        } catch (IOException e) {
-            throw new RuntimeException("Erro ao ler os dados da requisição", e);
+            return authenticationManager.authenticate(authToken);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao ler credenciais", e);
         }
     }
 
@@ -55,19 +54,35 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-        User user = (User) authService.loadUserByUsername(authResult.getName());
+                                            Authentication authResult)
+            throws IOException {
+
+        String username = authResult.getName();
+
+
+        User user = (User) authService.loadUserByUsername(username);
+
+
+        String role = user.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse("ROLE_USER");
+
 
         String token = JWT.create()
-                .withSubject(authResult.getName())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .withSubject(username)
+                .withClaim("role", role)
+                .withClaim("id", user.getId())
+                .withExpiresAt(new Date(
+                        System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME
+                ))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET));
 
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
-        response.getWriter().write(
-                new ObjectMapper().writeValueAsString(
-                        new AuthenticationResponse(token, new UserResponseDTO(user)))
-        );
+
+        var result = new AuthenticationResponse(token, new UserResponseDTO(user));
+
+        response.getWriter().write(new ObjectMapper().writeValueAsString(result));
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Order {
 
     @Id
@@ -23,8 +24,9 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -33,22 +35,35 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDocument> documents;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderStatusHistory> history;
+
     @Column(nullable = false)
     private String shippingAddressStreet;
+
     @Column(nullable = false)
     private String shippingAddressNumber;
+
     private String shippingAddressComplement;
+
     @Column(nullable = false)
     private String shippingAddressNeighborhood;
+
     @Column(nullable = false)
     private String shippingAddressCity;
+
     @Column(nullable = false)
     private String shippingAddressState;
+
     @Column(nullable = false)
     private String shippingAddressZipCode;
 
     @Column(nullable = false)
     private String paymentMethodType;
+
     @Column(nullable = false)
     private String paymentMethodDetails;
 
@@ -57,16 +72,8 @@ public class Order {
         if (this.orderDate == null) {
             this.orderDate = LocalDateTime.now();
         }
-        if (this.status == null || this.status.isEmpty()) {
-            this.status = "PENDING";
+        if (this.status == null) {
+            this.status = OrderStatus.AGUARDANDO_PAGAMENTO;
         }
-        if (this.shippingAddressStreet == null) this.shippingAddressStreet = "";
-        if (this.shippingAddressNumber == null) this.shippingAddressNumber = "";
-        if (this.shippingAddressNeighborhood == null) this.shippingAddressNeighborhood = "";
-        if (this.shippingAddressCity == null) this.shippingAddressCity = "";
-        if (this.shippingAddressState == null) this.shippingAddressState = "";
-        if (this.shippingAddressZipCode == null) this.shippingAddressZipCode = "";
-        if (this.paymentMethodType == null) this.paymentMethodType = "";
-        if (this.paymentMethodDetails == null) this.paymentMethodDetails = "";
     }
 }

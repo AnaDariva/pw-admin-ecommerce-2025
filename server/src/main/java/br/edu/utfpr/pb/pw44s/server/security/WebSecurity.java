@@ -37,41 +37,50 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        // Configura o AuthenticationManager
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+
         authenticationManagerBuilder.userDetailsService(authService).passwordEncoder(passwordEncoder());
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
+        // Configurações padrão
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(cors -> corsConfigurationSource());
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint));
 
-        http.authorizeHttpRequests(authorize -> authorize
-                // 🔓 Libera a criação de novos usuários
-                .requestMatchers(antMatcher(HttpMethod.POST, "/users")).permitAll()
-                .requestMatchers(antMatcher(HttpMethod.POST, "/users/**")).permitAll() // Caso haja sub-rotas para users
-                // 🔓 Libera o login
-                .requestMatchers(antMatcher(HttpMethod.POST, "/login")).permitAll()
-                // 🔓 Libera o acesso à listagem de produtos e categorias (AGORA COM OS NOMES CORRETOS!)
-                .requestMatchers(antMatcher(HttpMethod.GET, "/products")).permitAll() // Listar todos os produtos
-                .requestMatchers(antMatcher(HttpMethod.GET, "/products/**")).permitAll() // Acessar produto por ID, etc.
-                .requestMatchers(antMatcher(HttpMethod.GET, "/categories")).permitAll() // Listar todas as categorias
-                .requestMatchers(antMatcher(HttpMethod.GET, "/categories/**")).permitAll() // Acessar categoria por ID, etc.
-                // 🔓 Libera recursos estáticos (se você tiver imagens locais no futuro)
-                .requestMatchers(antMatcher(HttpMethod.GET, "/images/**")).permitAll() // Ex: http://localhost:8080/images/nome.png
-                // 🔓 Libera o H2 e páginas de erro
-                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                .requestMatchers(antMatcher("/error/**")).permitAll()
-                // 🔒 Qualquer outra rota exige autenticação
-                .anyRequest().authenticated()
-        );
 
-        http.authenticationManager(authenticationManager)
-                .addFilter(new JWTAuthenticationFilter(authenticationManager, authService))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager, authService))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(authorize -> authorize
+
+
+                .requestMatchers(antMatcher(HttpMethod.POST, "/users")).permitAll()
+
+
+                .requestMatchers(antMatcher(HttpMethod.POST, "/login")).permitAll()
+
+
+                .requestMatchers(antMatcher(HttpMethod.GET, "/products/**")).permitAll().requestMatchers(antMatcher(HttpMethod.GET, "/categories/**")).permitAll()
+
+
+                .requestMatchers(antMatcher(HttpMethod.GET, "/images/**")).permitAll()
+
+
+                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+
+                .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+
+
+                .anyRequest().authenticated());
+
+
+        JWTAuthenticationFilter authFilter = new JWTAuthenticationFilter(authenticationManager, authService);
+
+
+        authFilter.setFilterProcessesUrl("/login");
+
+        http.authenticationManager(authenticationManager).addFilter(authFilter).addFilter(new JWTAuthorizationFilter(authenticationManager, authService)).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

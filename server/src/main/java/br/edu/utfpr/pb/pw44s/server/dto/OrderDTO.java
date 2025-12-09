@@ -29,7 +29,7 @@ public class OrderDTO {
     private String shippingAddressCity;
     private String shippingAddressState;
     private String shippingAddressZipCode;
-
+    private List<OrderStatusHistoryDTO> history;
     private Long userId;
 
     private List<OrderItemDTO> items;

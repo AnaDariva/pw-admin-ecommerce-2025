@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class JwtTokenUtil {
 
-    // Método para recuperar o usuário autenticado diretamente do contexto de segurança
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof User) {

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IOrderService extends ICrudService<Order, Long> {
 
-    Order save(Order order); // Sobrescreve o save = lógica específica
+    Order save(Order order);
 
 
     List<Order> findByUserId(Long userId);
