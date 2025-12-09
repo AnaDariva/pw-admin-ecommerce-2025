@@ -92,24 +92,24 @@ A aplicação é dividida em dois módulos funcionais principais:
 ## 🏗️ Ferramentas e Requisitos
 
 ### Backend
-- Java JDK 17+ (ou 21+)
+- Java JDK 21
 - Spring Boot, Spring Web, Spring Data JPA, Spring Security
-- Spring Mail (para envio de e-mails)
-- Banco de Dados: PostgreSQL ou MySQL (H2 para testes/desenvolvimento)
-- IDE: IntelliJ ou Eclipse
+- Spring Mail 
+- Banco de Dados: H2 
+- IDE: IntelliJ 
 - Testes: Postman ou Insomnia
 
 ### Frontend
 - React.js com TypeScript
 - HTML & CSS
 - Node.js & npm
-- IDE: VS Code ou WebStorm
+- IDE: WebStorm
 
 ---
 
 ## 🗄️ Banco de Dados
 
-O projeto utiliza preferencialmente **PostgreSQL** ou **MySQL** como banco de dados persistente. Para ambiente de desenvolvimento e testes, o H2 (em memória) pode ser utilizado.
+O projeto utiliza o H2 (em memória) para testes.
 
 **Estrutura de Tabelas Sugerida:**
 - `usuarios`: Armazena usuários administrativos e clientes (ou separados), com seus perfis e permissões.
