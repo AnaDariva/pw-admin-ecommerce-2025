@@ -1,0 +1,89 @@
+.users-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.users-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.users-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 30px;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.users-table thead {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.users-table th,
+.users-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.users-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn.activate {
+    background-color: #2563eb;
+    color: white;
+}
+
+.btn.role {
+    background-color: #10b981;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge.active {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge.inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge.role {
+    background-color: #e0e7ff;
+    color: #4338ca;
+}

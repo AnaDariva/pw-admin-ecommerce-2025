@@ -21,9 +21,10 @@ export interface Authorities {
 }
 
 export interface AuthenticatedUser {
-  displayName: string;
-  username: string;
-  authorities: Authorities[];
+    displayName: string;
+    username: string;
+    authorities: Authorities[];
+    role: string;
 }
 
 export interface AuthenticationResponse {
@@ -93,4 +94,13 @@ export interface IOrder {
     items: IOrderItem[];
     shippingAddress: IAddress;
     paymentMethod: IPaymentMethod;
+}
+
+export interface IOrderDocument {
+    id: number;
+    orderId: number;
+    originalFilename: string;
+    contentType: string;
+    size: number;
+    uploadDate: string;
 }

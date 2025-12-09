@@ -1,22 +1,55 @@
 :root {
-  --nba-blue: #1769aa;
-  --nba-red: #ba1330;
-  --nba-white: #ffffff;
-  --nba-gray: #f5f5f5;
+    --nba-blue: #1769aa;
+    --nba-red: #ba1330;
+
+    --bg-page: #f5f5f5;
+    --bg-card: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 }
-body {
-  background: var(--nba-gray);
+
+body.dark-mode {
+    --bg-page: #0f172a;
+    --bg-card: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
 }
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;  
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }

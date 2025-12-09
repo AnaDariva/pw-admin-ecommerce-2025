@@ -1,88 +1,129 @@
-import { createContext, useEffect, useState } from "react"; 
+
+import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type {
-  AuthenticatedUser,
-  AuthenticationResponse,
+    AuthenticatedUser,
+    AuthenticationResponse,
 } from "@/commons/types";
 import { api } from "@/lib/axios";
-import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+    sub: string;
+    role?: string;
+    id?: number;
+    name?: string;
+    exp?: number;
+}
 
 interface AuthContextType {
-  authenticated: boolean;
-  authenticatedUser?: AuthenticatedUser;
-  handleLogin: (authenticationResponse: AuthenticationResponse) => Promise<any>;
-  handleLogout: () => void;
+    authenticated: boolean;
+    authenticatedUser?: AuthenticatedUser & { role: string };
+    handleLogin: (authenticationResponse: AuthenticationResponse) => Promise<any>;
+    handleLogout: () => void;
 }
 
 interface AuthProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [authenticatedUser, setAuthenticatedUser] =
-    useState<AuthenticatedUser>();
-  const navigate = useNavigate();
+    const [authenticated, setAuthenticated] = useState(false);
+    const [authenticatedUser, setAuthenticatedUser] =
+        useState<AuthenticatedUser & { role: string }>();
 
-  useEffect(() => {
-    
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const formatUser = (user: AuthenticatedUser & { role?: string }, token?: string) => {
+        let roleFromToken: string | undefined;
+        let idFromToken: number | undefined;
+        let nameFromToken: string | undefined;
 
-    if (storedUser && storedToken) {
-      setAuthenticatedUser(JSON.parse(storedUser)); 
-      setAuthenticated(true);
-     
-      api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
-      console.log(
-        "AuthContext: Token lido do localStorage (PURO):",
-        storedToken
-      ); 
-      navigate("/");
-    }
-  }, []);
+        if (token) {
+            try {
+                const decoded = jwtDecode<JwtPayload>(token);
+                roleFromToken = decoded.role;
+                idFromToken = decoded.id;
+                nameFromToken = decoded.name;
+            } catch (error) {
+                console.error("AuthContext: erro ao decodificar JWT:", error);
+            }
+        }
 
-  const handleLogin = async (
-    authenticationResponse: AuthenticationResponse
-  ) => {
-    try {
-      localStorage.setItem("token", authenticationResponse.token);
-      localStorage.setItem("user", JSON.stringify(authenticationResponse.user));
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${authenticationResponse.token}`;
-      console.log(
-        "AuthContext: Token salvo/definido (PURO):",
-        authenticationResponse.token
-      );
+        const extractedRole =
+            roleFromToken ??
+            user.role ??
+            user.authorities?.[0]?.authority ??
+            "";
 
-      setAuthenticatedUser(authenticationResponse.user);
-      setAuthenticated(true);
-    } catch (error) {
-      console.error("Erro em handleLogin:", error);
-      setAuthenticatedUser(undefined);
-      setAuthenticated(false);
-    }
-  };
+        return {
+            ...user,
+            id: idFromToken ?? (user as any).id,
+            name: nameFromToken ?? (user as any).name,
+            role: extractedRole,
+        };
+    };
 
-  const handleLogout = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    api.defaults.headers.common["Authorization"] = "";
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        const storedUserStr = localStorage.getItem("user");
 
-    setAuthenticated(false);
-    setAuthenticatedUser(undefined);
-  };
+        if (storedUserStr && storedToken) {
+            const parsedUser = JSON.parse(
+                storedUserStr
+            ) as AuthenticatedUser & { role: string };
 
-  return (
-    <AuthContext.Provider
-      value={{ authenticated, authenticatedUser, handleLogin, handleLogout }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+            setAuthenticatedUser(parsedUser);
+            setAuthenticated(true);
+
+            api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
+
+            console.log("AuthContext: Sessão restaurada:", parsedUser.role);
+        }
+    }, []);
+
+    const handleLogin = async (
+        authenticationResponse: AuthenticationResponse
+    ) => {
+        try {
+            const { token, user } = authenticationResponse;
+
+            const formattedUser = formatUser(user, token);
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(formattedUser));
+
+            api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+            setAuthenticatedUser(formattedUser);
+            setAuthenticated(true);
+
+            console.log("AuthContext: Login efetuado. Role:", formattedUser.role);
+        } catch (error) {
+            console.error("AuthContext: erro em handleLogin:", error);
+            setAuthenticatedUser(undefined);
+            setAuthenticated(false);
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        delete api.defaults.headers.common["Authorization"];
+
+        setAuthenticated(false);
+        setAuthenticatedUser(undefined);
+
+        console.log("AuthContext: Logout efetuado.");
+    };
+
+    return (
+        <AuthContext.Provider
+            value={{ authenticated, authenticatedUser, handleLogin, handleLogout }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export { AuthContext };
