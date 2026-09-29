@@ -6,7 +6,7 @@ Este projeto consiste em uma plataforma de e-commerce completa, dividida em dois
 
 📁 O projeto é estruturado em:
 - `server/` – API RESTful desenvolvida com **Spring Boot**.
-- `client/` – Cliente Web (Vitrine e Painel Admin) desenvolvido com **React.js**, **TypeScript**, **HTML** e **CSS**.
+- `client/` – Cliente Web (Vitrine e Painel Admin) desenvolvido com **React.js**, **TypeScript**, **HTML** e **CSS**
 
 ---
 
